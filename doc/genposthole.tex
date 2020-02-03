@@ -1,0 +1,112 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\newtheorem{problem}{Problem}
+\begin{document}
+
+\title{The Generalized Spherical Rotation Hole-and-Post Cover Problem}
+\author{Robert L. Read}
+
+\maketitle
+
+\begin{abstract}
+  It is possible to generalize a ball-and-socket mechanical joint
+  to allow multiple members to be attached concentrically so that
+  each radiates directly fromt he center of the ball and supports
+  a limited amount of angular displacement. Because such joints
+  a completely concentric, they have the mechanical advantage that
+  force is purely compressive or tensile in the members, making them
+  tensegrities.  It is not obvious, however, how much angular displacement
+  can be supported by a physical joint. In other words, can a given joint
+  support a given configuration of members coming in from different directions?
+  This paper formalizes this problem mathematically and addresses its
+  solution using numerical optimization methods.
+
+\end{abstract}
+
+\section{Introduction}
+
+
+\section{Problem Statement}
+  Define the Generalized Spherical Rotation Hole-and-Post Cover Problem:
+
+  \begin{problem}
+  Given a unit radius sphere $A$ with a sequence of $n$ circular holes
+  cut out whose centers are given by the unit vectors $C_i$ and
+  half-angles (less than $\pi/2$) are given by $A_i$ and
+  a unit radius sphere $B$ with a corresponding sequence of $n$ dots or posts
+  given by unit vectors $D_i$, is there a rotation about the origin
+  of the $A$ that exposes (or covers) each dot or post with the corresponding
+  hole? If not, what rotation mimimizes the sum of the squares of the
+  distances from the dot to the corresponding circles if they are not
+  exposed?
+  \end{problem}
+
+  Although this problem could have an algorithmic solution,
+  the problem only has three dimensions (the Euler angles of the rotation of
+  $A$ to a cover, for example), and therefore is likely very efficiently
+  solved by numerical optimazation methods, even without computation of
+  a derivative, given an appropriate objective function to minimize.
+  Although a proper algorithm would be more elegant, it is probably beyond
+  the author without a great deal of thought, and our primary purpose
+  is to make our actual robot function properly without moving into
+  configurations which cause it to crack itself apart. A numerical
+  solution is expected to be adequately efficient for that purpose.
+  The second part of the problem statement clearly anticipates a numeric
+  solution.
+  \section{An Objective Function}
+
+  We need an objective function which takes Euler angles $\alpha,\beta,\gamma$,
+  the sphere $A$ and the sphere $B$ and produces a penalty which is the sum of
+  the squares of the distance to the circle of the dot on $B$ to the circle on $A$
+  for each pair $i$. This will be zero if the dot is actually in the circle (or
+  on the section of the sphere defined by the circles.
+
+  From the Euler angles we construct a rotation matrix which can be applied to the
+  center of each circle to rotate it. Assume we are in a right-handed frame of
+  reference. We choose to think in terms of extrinsic rotations about the fixed
+  axes, and arbitrarily choose the  $z_2-x-z_1$ sequence.
+
+  Wikipedia explains how to compute a rotation matrix $M$ for from $\alpha, \beta$ and $\gamma$
+  directly. Let $\angle (a,b)$ denote the angle between (unit) vectors $a$ and $b$.
+  The distance between two unit vectors is twice the sin of the half angle.
+
+  \[
+p(a,b,\theta) =
+\begin{cases}
+  0 & \text{if}\ \angle(a,b) <= \theta \\
+  (2\sin{\frac{\angle(a,b) - \theta}{2}})^2           & \text{if}\  \angle(a,b) > \theta \\
+\end{cases}
+  \]
+
+\[
+f(x) = \sum_{i=1}^{n} p(D_i,M C_i,A_i)
+\]
+
+\section{Motivating Test Case}
+
+We are particularly interested in a tetrobot---a robot composed entirely of tetrahedra
+which can change their length. Such robots
+can crawl or ``ooze'' in motion reminscient of slugs or snails.
+In a sense they are similar to tentacles of a mollusc like an octopus.
+We seek to use spherical joints that can implement such tetrobots.
+
+Therefore we in particular want to answer the question is a given configurable
+acheivable without breaking the joints. An extension of this is: how can we make
+all configurations acheivable? Clearly by either allowing extraordinary high angular
+displacement (which is mechanically difficult) or by limiting the angular displacement
+of the members by limiting the ratio of maximum extent of a member to minimum extent
+we can acheive this.
+
+The most obvious case is to model the center of the holes against a regular tetrahelix.
+
+
+
+
+
+
+
+\section{Conclusion}
+Write your conclusion here.
+
+\end{document}
